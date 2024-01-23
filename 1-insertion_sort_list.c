@@ -1,51 +1,54 @@
 #include "sort.h"
 
-void swich(listint_t *x, listint_t *y);
+/**
+ * swap - function to swap two nodes in a doubly linked list
+ * @a: 1st node address
+ * @b: 2nd node address
+ *
+ * Return: void
+ */
+void swap(listint_t *a, listint_t *b)
+{
+    if (a->prev)
+        a->prev->next = b;
+
+    if (b->next)
+        b->next->prev = a;
+
+    a->next = b->next;
+    b->prev = a->prev;
+    a->prev = b;
+
+    if (a->next)
+        a->next->prev = a;
+
+    b->next = a;
+}
 
 /**
- * insertion_sort_list - function to sort nodes in DLLL using
- * insertion sort algorithm concept
- * @list: Pointer to DLL head node
+ * insertion_sort_list - function to sort nodes of a doubly linked list
+ * @list: pointer to the head of the doubly linked list
  *
- * Return: Nothing
+ * Return: void
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *i, *j;
+    listint_t *i, *j;
 
-	if (list == NULL || *list == NULL)
-		return;
-	if ((*list)->next == NULL)
-		return;
-	for (i = (*list)->next; i; i = i->next)
-	{
-		for (j = i; j && j->prev && j->prev->n > j->n; j = j->prev)
-		{
-			swich(j->prev, j);
-			if (!j->prev)
-				*list = j;
-			print_list((const listint_t *)*list);
-		}
-	}
-}
-/**
- * swich - function to swap 2 nodes in DLL
- * @x: 1s node address
- * @y: 2nd node address
- *
- * Return: Nohthing
- */
-void swich(listint_t *x, listint_t *y)
-{
-	if (x->prev)
-		x->prev->next = y;
-	if (y->next)
-		y->next->prev = x;
-	x->next = y->next;
-	y->prev = x->prev;
-	x->prev = y;
+    if (!list || !*list || !(*list)->next)
+        return;
 
-	if (x->next)
-		x->next->prev = x;
-	y->next = x;
+    for (i = (*list)->next; i; i = i->next)
+    {
+        for (j = i; j && j->prev && j->prev->n > j->n; j = j->prev)
+        {
+            swap(j->prev, j);
+        }
+        
+        /* Update the head after inner loop */
+        if (!j->prev)
+            *list = j;
+
+        print_list((const listint_t *)*list);
+    }
 }
