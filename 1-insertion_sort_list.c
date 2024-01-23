@@ -1,29 +1,6 @@
 #include "sort.h"
 
-/**
- * swap - function to swap two nodes in a doubly linked list
- * @a: 1st node address
- * @b: 2nd node address
- *
- * Return: void
- */
-void swap(listint_t *a, listint_t *b)
-{
-    if (a->prev)
-        a->prev->next = b;
-
-    if (b->next)
-        b->next->prev = a;
-
-    a->next = b->next;
-    b->prev = a->prev;
-    a->prev = b;
-
-    if (a->next)
-        a->next->prev = a;
-
-    b->next = a;
-}
+void swich(listint_t *x, listint_t *y);
 
 /**
  * insertion_sort_list - function to sort nodes of a doubly linked list
@@ -33,22 +10,42 @@ void swap(listint_t *a, listint_t *b)
  */
 void insertion_sort_list(listint_t **list)
 {
-    listint_t *i, *j;
+	listint_t *itr1, *itr2;
 
-    if (!list || !*list || !(*list)->next)
-        return;
+	if (list == NULL || *list == NULL)
+		return;
+	if ((*list)->next == NULL)
+		return;
+	itr1 = (*list)->next;
 
-    for (i = (*list)->next; i; i = i->next)
-    {
-        for (j = i; j && j->prev && j->prev->n > j->n; j = j->prev)
-        {
-            swap(j->prev, j);
-        }
-        
-        /* Update the head after inner loop */
-        if (!j->prev)
-            *list = j;
-
-        print_list((const listint_t *)*list);
-    }
+	while (itr1)
+	{
+		itr2 = itr1;
+		itr1 = itr1->next;
+		while (itr2 && itr2->prev && itr2->prev->n > itr2->n)
+		{
+			swich(itr2->prev, itr2);
+			if (!itr2->prev)
+				*list = itr2;
+			print_list((const listint_t *)*list);
+		}
+	}
+}
+/**
+ * swich - function to swap two nodes in a doubly linked list
+ * @x: 1st node address
+ * @y: 2nd node address
+ *
+ * Return: void
+ */
+void swich(listint_t *x, listint_t *y)
+{
+	if (x->prev)
+		x->prev->next = y;
+	if (y->next)
+		y->next->prev = x;
+	x->next = y->next;
+	y->prev = x->prev;
+	x->prev = y;
+	y->next = x;
 }
