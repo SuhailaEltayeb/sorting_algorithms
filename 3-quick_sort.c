@@ -1,5 +1,6 @@
 #include "sort.h"
 
+/* quick sort */
 void quick_sort(int *array, size_t size);
 void swich_integers(int *x, int *y);
 
